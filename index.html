@@ -1,0 +1,512 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nigel Agri Parts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: workshop counter — a dark green header band, a big machine-selector "counter" up top, results grid below, spec finder and services after. */
+:root{
+  --bg:#F2F4F0; --surface:#FFFFFF; --ink:#1B2320; --muted:#5D6963; --line:#D8DDD7;
+  --accent:#E6AE0B; --accent-ink:#1B2320; --head-bg:#24472E; --head-fg:#F4F7F2; --soft:#E8ECE6;
+  --ok:#2E7D46; --warn:#A86A00; --info:#3C5E8C;
+  --f-display:"Saira Condensed","Arial Narrow",sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121715; --surface:#1A211E; --ink:#E8EDE9; --muted:#9BA6A0; --line:#2D3632;
+  --accent:#F0BF2C; --accent-ink:#1B2320; --head-bg:#17251C; --head-fg:#E8EDE9; --soft:#222B27;
+  --ok:#6CC08A; --warn:#E3A93C; --info:#8DB0E0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121715; --surface:#1A211E; --ink:#E8EDE9; --muted:#9BA6A0; --line:#2D3632;
+  --accent:#F0BF2C; --accent-ink:#1B2320; --head-bg:#17251C; --head-fg:#E8EDE9; --soft:#222B27;
+  --ok:#6CC08A; --warn:#E3A93C; --info:#8DB0E0; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+.mono{font-family:var(--f-mono);font-size:.82em;letter-spacing:.01em}
+h1,h2,h3{font-family:var(--f-display);line-height:1.05;text-wrap:balance;margin:0}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+
+/* demo ribbon + header */
+.demo{background:var(--accent);color:var(--accent-ink);font-size:.85rem;font-weight:600;text-align:center;padding:6px 16px}
+header{background:var(--head-bg);color:var(--head-fg);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.hrow{display:flex;align-items:center;gap:16px;padding-block:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:1.45rem;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+.logo svg{flex:none}
+.qsearch{flex:1 1 280px;display:flex;min-width:0}
+.qsearch input{flex:1;min-width:0;border:0;border-radius:6px 0 0 6px;padding:10px 12px;background:var(--surface);color:var(--ink)}
+.qsearch button{border:0;border-radius:0 6px 6px 0;background:var(--accent);color:var(--accent-ink);font-weight:700;padding:0 16px}
+.hbtns{display:flex;gap:8px}
+.hbtn{background:transparent;border:1px solid color-mix(in srgb,var(--head-fg) 35%,transparent);color:var(--head-fg);border-radius:6px;padding:8px 12px;font-weight:600;display:flex;gap:6px;align-items:center}
+.count{background:var(--accent);color:var(--accent-ink);border-radius:99px;font-size:.75rem;padding:0 7px;font-weight:700}
+nav.cats{display:flex;gap:4px 20px;flex-wrap:wrap;padding-bottom:10px;font-size:.92rem;opacity:.85}
+nav.cats a{color:inherit;text-decoration:none}
+nav.cats a:hover{text-decoration:underline}
+
+/* finder */
+.finder{padding-block:28px 8px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:28px;align-items:start}
+.pitch h1{font-size:clamp(2.2rem,5vw,3.6rem);text-transform:uppercase;font-weight:800}
+.pitch h1 em{font-style:normal;background:var(--accent);color:var(--accent-ink);padding:0 .15em}
+.pitch p{color:var(--muted);max-width:44ch;margin:14px 0 0}
+.trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.trust span{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 12px;font-size:.85rem}
+.counter{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 6px 24px -14px rgba(0,0,0,.35)}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:var(--soft)}
+.tab{flex:1;border:0;background:transparent;padding:12px 8px;font-weight:700;font-size:.95rem;color:var(--muted);border-bottom:3px solid transparent}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);background:var(--surface)}
+.panel{padding:20px;display:grid;gap:14px}
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:4px;min-width:0}
+.field label{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.field label b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.7rem;margin-right:6px}
+select,.panel input{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.go{background:var(--ink);color:var(--surface);border:0;border-radius:6px;padding:12px 16px;font-weight:700;font-size:1rem}
+.go:hover{opacity:.9}
+.hint{font-size:.85rem;color:var(--muted);margin:0}
+.toggle{display:flex;gap:6px}
+.toggle button{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:8px;font-weight:600}
+.toggle button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* results */
+section.block{padding-block:28px}
+.machine{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.machine h2{font-size:1.9rem;text-transform:uppercase}
+.specs{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:.88rem;color:var(--muted);margin-top:4px}
+.specs b{color:var(--ink);font-weight:600}
+.ghost{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:8px 12px;font-weight:600}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 14px;font-weight:600;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.chip span{opacity:.6;font-weight:400;margin-left:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.part{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;grid-template-rows:auto auto 1fr auto;gap:8px;min-width:0}
+.part .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.sys{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--muted)}
+.part h3{font-family:var(--f-body);font-size:1.02rem;font-weight:700;line-height:1.3}
+.refs{font-size:.82rem;color:var(--muted);display:grid;gap:2px}
+.refs .mono{color:var(--ink)}
+.pill{font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap;border:1px solid currentColor}
+.pill.ok{color:var(--ok)} .pill.warn{color:var(--warn)} .pill.info{color:var(--info)}
+.buy{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.price{font-family:var(--f-display);font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.price small{font-family:var(--f-body);font-size:.7rem;color:var(--muted);font-weight:400;margin-left:2px}
+.add{background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:8px 14px;font-weight:700}
+.std{font-size:.72rem;font-weight:700;background:var(--soft);border-radius:4px;padding:2px 6px;color:var(--muted)}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:24px;color:var(--muted);text-align:center}
+
+/* sections */
+.sechead{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sechead h2{font-size:2rem;text-transform:uppercase}
+.sechead p{margin:4px 0 0;color:var(--muted);max-width:60ch}
+.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.cat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;text-align:left;display:grid;gap:2px}
+.cat strong{font-size:1rem}
+.cat span{font-size:.82rem;color:var(--muted)}
+.cat:hover{border-color:var(--ink)}
+.services{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.svc{background:var(--surface);padding:18px;display:grid;gap:6px;align-content:start}
+.svc h3{font-size:1.25rem;text-transform:uppercase}
+.svc p{margin:0;color:var(--muted);font-size:.92rem}
+.wa{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--head-bg);color:var(--head-fg);border-radius:10px;padding:22px}
+.wa h2{font-size:1.8rem;text-transform:uppercase}
+.wa p{margin:6px 0 0;opacity:.85;max-width:56ch}
+.wa .num{margin-left:auto;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:12px 16px;font-weight:700;user-select:all}
+footer{border-top:1px solid var(--line);margin-top:20px;padding-block:24px;color:var(--muted);font-size:.88rem}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+footer strong{color:var(--ink);display:block;margin-bottom:4px}
+
+/* drawers */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--surface);z-index:41;display:flex;flex-direction:column;padding:calc(16px + env(safe-area-inset-top,0px)) 18px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:-10px 0 30px rgba(0,0,0,.25)}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.dhead h2{font-size:1.6rem;text-transform:uppercase}
+.x{border:0;background:var(--soft);border-radius:6px;width:36px;height:36px;font-size:1.2rem}
+.dbody{flex:1;overflow:auto;display:grid;gap:10px;align-content:start}
+.line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.line .mono{color:var(--muted)}
+.qty{display:flex;gap:6px;align-items:center}
+.qty button{width:28px;height:28px;border:1px solid var(--line);background:var(--bg);border-radius:5px}
+.totals{border-top:2px solid var(--ink);padding-top:12px;display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.totals div{display:flex;justify-content:space-between}
+.totals .big{font-size:1.2rem;font-weight:700}
+.shed{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:12px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:8px;z-index:50;font-weight:600;max-width:calc(100% - 32px)}
+
+@media (max-width:860px){
+  .finder{grid-template-columns:1fr}
+  .services{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:480px){
+  .steps{grid-template-columns:1fr}
+  .services{grid-template-columns:1fr}
+  .hbtn .lbl{display:none}
+  .wa .num{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+
+<div class="demo">Demo website · sample machines, parts and prices only · not a live shop</div>
+
+<header>
+  <div class="wrap">
+    <div class="hrow">
+      <div class="logo">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="17" cy="17" r="5" fill="var(--accent)"/><g stroke="currentColor" stroke-width="3"><path d="M17 2v6M17 26v6M2 17h6M26 17h6"/></g></svg>
+        Nigel Agri Parts
+      </div>
+      <form class="qsearch" id="qform" role="search">
+        <input id="q" type="search" placeholder="Part number, OEM number or part name" aria-label="Search parts">
+        <button type="submit">Search</button>
+      </form>
+      <div class="hbtns">
+        <button class="hbtn" id="shedBtn" type="button"><span aria-hidden="true">⌂</span><span class="lbl">My Shed</span> <span class="count" id="shedCount">0</span></button>
+        <button class="hbtn" id="cartBtn" type="button"><span aria-hidden="true">🛒</span><span class="lbl">Cart</span> <span class="count" id="cartCount">0</span></button>
+      </div>
+    </div>
+    <nav class="cats" aria-label="Categories">
+      <a href="#finder">Find by machine</a><a href="#sizes">Find by size</a><a href="#categories">Categories</a><a href="#services">Delivery &amp; trade</a><a href="#whatsapp">Identify a part</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="finder" id="finder">
+    <div class="pitch">
+      <div class="eyebrow">Tractor &amp; implement parts · Nigel, Gauteng</div>
+      <h1>The right part for <em>your</em> machine.</h1>
+      <p>Pick your tractor or implement and see only the parts that fit it. Filters, hydraulics, PTO, linkage and wear parts, with OEM and aftermarket options side by side.</p>
+      <div class="trust"><span>Collect in Nigel</span><span>Courier nationwide</span><span>Wrong-part guarantee</span><span>Trade accounts</span></div>
+    </div>
+
+    <div class="counter">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-tab="machine" id="tab-machine">By machine</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="number" id="tab-number">By part number</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="size" id="tab-size">By size</button>
+      </div>
+
+      <div class="panel" id="p-machine">
+        <div class="toggle" role="group" aria-label="Machine type">
+          <button type="button" data-kind="tractor" aria-pressed="true" id="k-tractor">Tractor</button>
+          <button type="button" data-kind="implement" aria-pressed="false" id="k-implement">Implement</button>
+        </div>
+        <div class="steps">
+          <div class="field"><label for="selMake"><b>1</b>Make</label><select id="selMake"></select></div>
+          <div class="field"><label for="selModel"><b>2</b>Model</label><select id="selModel"></select></div>
+          <div class="field"><label for="selYear"><b>3</b>Year</label><select id="selYear"></select></div>
+          <div class="field"><label for="selSys"><b>4</b>System (optional)</label><select id="selSys"></select></div>
+        </div>
+        <button class="go" id="goMachine" type="button">Show parts that fit</button>
+        <p class="hint">Not sure of the model? Send a photo of the ID plate on WhatsApp and we'll find it.</p>
+      </div>
+
+      <div class="panel" id="p-number" hidden>
+        <div class="field"><label for="pn">Part number</label><input id="pn" placeholder="e.g. NAP-30412 or OEM ref FLT-HY-2210"></div>
+        <button class="go" id="goNumber" type="button">Find part &amp; equivalents</button>
+        <p class="hint">Type the number off the old part or your manual. We show the original and cheaper aftermarket equivalents.</p>
+      </div>
+
+      <div class="panel" id="p-size" hidden>
+        <div class="field"><label for="sizeCat">What are you looking for?</label><select id="sizeCat"></select></div>
+        <div class="steps" id="sizeFields"></div>
+        <button class="go" id="goSize" type="button">Show matching parts</button>
+        <p class="hint">Standard parts fit many machines. Measure the old part and search by size.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="results" aria-live="polite"></section>
+
+  <section class="block" id="sizes">
+    <div class="sechead"><div><div class="eyebrow">Standard parts</div><h2>Shop by size</h2><p>Linkage pins, PTO shafts, couplers, disc blades and bearings follow industry standards. If you know the size, you don't need the model.</p></div></div>
+    <div class="catgrid" id="sizeCards"></div>
+  </section>
+
+  <section class="block" id="categories">
+    <div class="sechead"><div><div class="eyebrow">Browse</div><h2>Categories</h2></div></div>
+    <div class="catgrid" id="catCards"></div>
+  </section>
+
+  <section class="block" id="services">
+    <div class="services">
+      <div class="svc"><div class="eyebrow">Collect</div><h3>Nigel counter</h3><p>Order online, collect same day from our Nigel branch.</p></div>
+      <div class="svc"><div class="eyebrow">Deliver</div><h3>Courier nationwide</h3><p>Door-to-farm courier, rates shown at checkout.</p></div>
+      <div class="svc"><div class="eyebrow">Machine down?</div><h3>Priority dispatch</h3><p>Flag urgent orders during planting and harvest for same-day dispatch.</p></div>
+      <div class="svc"><div class="eyebrow">Trade</div><h3>Accounts &amp; co-ops</h3><p>30-day accounts, contractor pricing and statements online.</p></div>
+    </div>
+  </section>
+
+  <section class="block" id="whatsapp">
+    <div class="wa">
+      <div><h2>Don't know what it's called?</h2><p>WhatsApp us a photo of the part or your machine's ID plate. We'll identify it and send you a link to buy.</p></div>
+      <div class="num" title="Placeholder number">WhatsApp 0XX XXX XXXX</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap fgrid">
+    <div><strong>Nigel Agri Parts</strong>Tractor and implement parts for Highveld farmers. Name, address and contact details are placeholders.</div>
+    <div><strong>Shop</strong>Find by machine · Find by size · Part number lookup · Seasonal service kits</div>
+    <div><strong>Help</strong>Delivery · Returns &amp; wrong-part guarantee · Warranty · Trade accounts</div>
+    <div><strong>Pay with</strong>EFT · Card · Instant EFT · Account. All prices include 15% VAT.</div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="cartDrawer" hidden aria-label="Cart">
+  <div class="dhead"><h2>Your cart</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div class="dbody" id="cartBody"></div>
+  <div class="totals" id="cartTotals"></div>
+  <button class="go" id="checkout" type="button" style="margin-top:12px">Checkout</button>
+</aside>
+<aside class="drawer" id="shedDrawer" hidden aria-label="My Shed">
+  <div class="dhead"><h2>My Shed</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <p class="hint">Save your machines once. Next time, one tap shows the parts that fit.</p>
+  <div class="dbody" id="shedBody" style="margin-top:12px"></div>
+</aside>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const SYSTEMS=["Filters","Engine","Hydraulics","PTO & driveline","Linkage","Electrical","Wear parts"];
+
+/* Sample machines. Attributes drive the standard-parts matching. */
+const MACHINES=[
+ {id:"jd5075e",kind:"tractor",make:"John Deere",model:"5075E",years:[2014,2024],hp:75,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"jd6120m",kind:"tractor",make:"John Deere",model:"6120M",years:[2013,2024],hp:120,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"mf375",kind:"tractor",make:"Massey Ferguson",model:"375",years:[1987,1998],hp:75,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"mf4709",kind:"tractor",make:"Massey Ferguson",model:"4709",years:[2017,2024],hp:90,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"nhtt75",kind:"tractor",make:"New Holland",model:"TT75",years:[2003,2016],hp:75,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"nhtd5",kind:"tractor",make:"New Holland",model:"TD5.90",years:[2015,2024],hp:86,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"kubm7040",kind:"tractor",make:"Kubota",model:"M7040",years:[2010,2019],hp:70,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"landini85",kind:"tractor",make:"Landini",model:"Powerfarm 85",years:[2008,2018],hp:85,cat:2,pto:'1-3/8" 6-spline',coupler:'ISO A 1/2"'},
+ {id:"disc24",kind:"implement",make:"Offset disc harrow",model:"24 disc × 610 mm",years:[2000,2024],cat:2,disc:610,bearing:"6207-2RS"},
+ {id:"disc32",kind:"implement",make:"Offset disc harrow",model:"32 disc × 660 mm",years:[2000,2024],cat:2,disc:660,bearing:"6208-2RS"},
+ {id:"plough3",kind:"implement",make:"Disc plough",model:"3-furrow, 660 mm",years:[1990,2024],cat:2,disc:660,bearing:"6208-2RS"},
+ {id:"ripper5",kind:"implement",make:"Ripper",model:"5-tine chisel ripper",years:[1995,2024],cat:2,point:"Std 50 mm"},
+ {id:"planter4",kind:"implement",make:"Planter",model:"4-row vacuum planter",years:[2005,2024],cat:2,bearing:"6205-2RS",pto:'1-3/8" 6-spline'}
+];
+
+/* Model-specific part templates (sample prices in Rand incl. VAT) */
+const T_TRACTOR=[
+ ["Filters","Engine oil filter","FLT-OL",165,"ok"],
+ ["Filters","Fuel filter, primary","FLT-FU",210,"ok"],
+ ["Filters","Air filter element, outer","FLT-AR",690,"ok"],
+ ["Filters","Hydraulic / transmission filter","FLT-HY",540,"warn"],
+ ["Filters","500-hour service kit (oil, fuel, air)","KIT-500",1295,"ok"],
+ ["Engine","Water pump with gasket","ENG-WP",3450,"warn"],
+ ["Engine","Fan belt","ENG-FB",320,"ok"],
+ ["Engine","Thermostat 82 °C","ENG-TH",385,"ok"],
+ ["Hydraulics","Lift ram seal kit","HYD-SK",890,"warn"],
+ ["Hydraulics","Hydraulic pump","HYD-PM",9850,"info"],
+ ["PTO & driveline","Clutch kit (plate, pressure plate, bearing)","DRV-CK",8950,"info"],
+ ["Linkage","Top link, Cat 2, adjustable","LNK-TL",1150,"ok"],
+ ["Linkage","Stabiliser chain set","LNK-SC",980,"ok"],
+ ["Electrical","Alternator 12 V","ELE-AL",4250,"warn"],
+ ["Electrical","Starter motor","ELE-ST",5390,"info"],
+ ["Electrical","LED work light, 27 W","ELE-WL",450,"ok"]
+];
+
+/* Standard parts, matched by spec instead of model */
+const STANDARD=[
+ {sys:"Linkage",name:"Lower link pin, Cat 2, 28 mm",sku:"NAP-20028",price:145,stock:"ok",spec:{type:"pin",cat:2,role:"lower"}},
+ {sys:"Linkage",name:"Top link pin, Cat 2, 25 mm",sku:"NAP-20025",price:125,stock:"ok",spec:{type:"pin",cat:2,role:"top"}},
+ {sys:"Linkage",name:"Lower link pin, Cat 1, 22 mm",sku:"NAP-10022",price:110,stock:"ok",spec:{type:"pin",cat:1,role:"lower"}},
+ {sys:"Linkage",name:"Top link pin, Cat 1, 19 mm",sku:"NAP-10019",price:95,stock:"ok",spec:{type:"pin",cat:1,role:"top"}},
+ {sys:"Linkage",name:"Linch pin 11 mm (pack of 4)",sku:"NAP-20411",price:60,stock:"ok",spec:{type:"pin",cat:2,role:"linch"}},
+ {sys:"PTO & driveline",name:'PTO shaft, series 4, 1-3/8" 6-spline, 1010 mm',sku:"NAP-40410",price:3650,stock:"ok",spec:{type:"pto",spline:'1-3/8" 6-spline',len:1010}},
+ {sys:"PTO & driveline",name:'PTO shaft, series 4, 1-3/8" 6-spline, 1210 mm',sku:"NAP-40412",price:3990,stock:"warn",spec:{type:"pto",spline:'1-3/8" 6-spline',len:1210}},
+ {sys:"PTO & driveline",name:'PTO shear bolt M10 × 60 (pack of 5)',sku:"NAP-40510",price:85,stock:"ok",spec:{type:"pto",spline:'1-3/8" 6-spline',len:0}},
+ {sys:"Hydraulics",name:'Quick coupler, ISO A 1/2", male',sku:"NAP-30412",oem:"FLT-HY-2210",price:240,stock:"ok",spec:{type:"coupler",size:'ISO A 1/2"'}},
+ {sys:"Hydraulics",name:'Quick coupler, ISO A 1/2", female',sku:"NAP-30413",price:310,stock:"ok",spec:{type:"coupler",size:'ISO A 1/2"'}},
+ {sys:"Hydraulics",name:'Quick coupler, ISO A 3/8", male',sku:"NAP-30382",price:210,stock:"ok",spec:{type:"coupler",size:'ISO A 3/8"'}},
+ {sys:"Wear parts",name:"Disc blade 610 mm, notched, 5 mm",sku:"NAP-50610",price:780,stock:"ok",spec:{type:"disc",dia:610}},
+ {sys:"Wear parts",name:"Disc blade 610 mm, plain, 5 mm",sku:"NAP-50611",price:720,stock:"ok",spec:{type:"disc",dia:610}},
+ {sys:"Wear parts",name:"Disc blade 660 mm, notched, 6 mm",sku:"NAP-50660",price:960,stock:"warn",spec:{type:"disc",dia:660}},
+ {sys:"Wear parts",name:"Ripper point, standard 50 mm",sku:"NAP-51050",price:265,stock:"ok",spec:{type:"point",size:"Std 50 mm"}},
+ {sys:"Engine",name:"Bearing 6205-2RS (25 × 52 × 15)",sku:"NAP-60205",price:95,stock:"ok",spec:{type:"bearing",no:"6205-2RS"}},
+ {sys:"Engine",name:"Bearing 6207-2RS (35 × 72 × 17)",sku:"NAP-60207",price:165,stock:"ok",spec:{type:"bearing",no:"6207-2RS"}},
+ {sys:"Engine",name:"Bearing 6208-2RS (40 × 80 × 18)",sku:"NAP-60208",price:195,stock:"ok",spec:{type:"bearing",no:"6208-2RS"}}
+];
+STANDARD.forEach(p=>{p.std=true;if(p.sys==="Engine"&&p.spec.type==="bearing")p.sys="Wear parts";});
+
+const STOCK={ok:["In stock · Nigel","ok"],warn:["2–3 days","warn"],info:["Order in · 5–7 days","info"]};
+
+function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+function partsFor(m){
+  let out=[];
+  if(m.kind==="tractor"){
+    out=T_TRACTOR.map(([sys,name,code,base,stock],i)=>{
+      const h=hash(m.id+code);
+      const factor=1+((h%40)-15)/100*(m.hp>100?1.4:1);
+      const price=Math.round(base*factor/5)*5;
+      return {sys,name,sku:`NAP-${code}-${m.id.toUpperCase().slice(0,5)}`,oem:`${code}-${(h%9000)+1000}`,
+        alt: i%3!==1 ? {brand:"Aftermarket",price:Math.round(price*0.72/5)*5}:null,price,stock,fits:[m.id]};
+    });
+  }
+  const std=STANDARD.filter(p=>{
+    const s=p.spec;
+    if(s.type==="pin")return s.cat===m.cat;
+    if(s.type==="pto")return m.pto&&s.spline===m.pto;
+    if(s.type==="coupler")return m.coupler&&s.size===m.coupler;
+    if(s.type==="disc")return m.disc===s.dia;
+    if(s.type==="point")return m.point===s.size;
+    if(s.type==="bearing")return m.bearing===s.no;
+  });
+  return out.concat(std);
+}
+function fitsList(p){
+  if(p.fits)return p.fits.map(id=>label(MACHINES.find(m=>m.id===id)));
+  return MACHINES.filter(m=>partsFor(m).some(x=>x.sku===p.sku)).map(label);
+}
+const label=m=>`${m.make} ${m.model}`;
+const R=n=>"R"+n.toLocaleString("en-ZA").replace(/,/g," ");
+
+/* state */
+let kind="tractor", cart=[], shed=[], current=null, activeSys="All";
+try{shed=JSON.parse(localStorage.getItem("nap-shed")||"[]")}catch(e){shed=[]}
+function saveShed(){try{localStorage.setItem("nap-shed",JSON.stringify(shed))}catch(e){} document.getElementById("shedCount").textContent=shed.length}
+
+const $=id=>document.getElementById(id);
+function opts(el,list,keep){const prev=el.value;el.innerHTML=list.map(v=>`<option>${v}</option>`).join("");if(keep&&list.includes(prev))el.value=prev}
+
+function fillMakes(){opts($("selMake"),[...new Set(MACHINES.filter(m=>m.kind===kind).map(m=>m.make))]);fillModels()}
+function fillModels(){opts($("selModel"),MACHINES.filter(m=>m.kind===kind&&m.make===$("selMake").value).map(m=>m.model));fillYears()}
+function fillYears(){const m=selected();const ys=[];for(let y=m.years[1];y>=m.years[0];y--)ys.push(y);opts($("selYear"),ys.map(String))}
+function selected(){return MACHINES.find(m=>m.kind===kind&&m.make===$("selMake").value&&m.model===$("selModel").value)}
+opts($("selSys"),["All systems",...SYSTEMS]);
+
+document.querySelectorAll("[data-kind]").forEach(b=>b.onclick=()=>{kind=b.dataset.kind;document.querySelectorAll("[data-kind]").forEach(x=>x.setAttribute("aria-pressed",x===b));fillMakes()});
+$("selMake").onchange=fillModels;$("selModel").onchange=fillYears;
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  ["machine","number","size"].forEach(k=>$("p-"+k).hidden=k!==t.dataset.tab);
+});
+
+function card(p){
+  const [st,cls]=STOCK[p.stock];
+  return `<article class="part">
+    <div class="top"><span class="sys">${p.sys}</span><span class="pill ${cls}">${st}</span></div>
+    <h3>${p.name}</h3>
+    <div class="refs">
+      <div>Our code <span class="mono">${p.sku}</span></div>
+      ${p.oem?`<div>OEM ref <span class="mono">${p.oem}</span></div>`:""}
+      ${p.std?`<div><span class="std">STANDARD PART · fits ${fitsList(p).length} machines</span></div>`:""}
+      ${p.alt?`<div>Aftermarket option: <b>${R(p.alt.price)}</b></div>`:""}
+    </div>
+    <div class="buy"><div class="price">${R(p.price)}<small>incl. VAT</small></div><button class="add" type="button" data-add="${p.sku}">Add</button></div>
+  </article>`;
+}
+let shown=[];
+function renderParts(list){
+  shown=list;
+  const counts={};list.forEach(p=>counts[p.sys]=(counts[p.sys]||0)+1);
+  const sysList=["All",...SYSTEMS.filter(s=>counts[s])];
+  if(!sysList.includes(activeSys))activeSys="All";
+  const vis=activeSys==="All"?list:list.filter(p=>p.sys===activeSys);
+  return `<div class="chips">${sysList.map(s=>`<button type="button" class="chip" data-sys="${s}" aria-pressed="${s===activeSys}">${s}<span>${s==="All"?list.length:counts[s]}</span></button>`).join("")}</div>
+  <div class="grid">${vis.map(card).join("")||'<div class="empty">No parts in this group yet.</div>'}</div>`;
+}
+function showMachine(m,year,sys){
+  current={m,year};activeSys=sys&&sys!=="All systems"?sys:"All";
+  const list=partsFor(m);
+  const saved=shed.some(s=>s.id===m.id&&s.year==year);
+  const specs=[m.hp?`<span><b>${m.hp} hp</b></span>`:"",`<span>Linkage <b>Cat ${m.cat}</b></span>`,m.pto?`<span>PTO <b>${m.pto}</b></span>`:"",m.coupler?`<span>Couplers <b>${m.coupler}</b></span>`:"",m.disc?`<span>Discs <b>${m.disc} mm</b></span>`:"",m.bearing?`<span>Hub bearing <b>${m.bearing}</b></span>`:""].join("");
+  $("results").innerHTML=`<div class="machine"><div><div class="eyebrow">Parts that fit</div><h2>${label(m)} · ${year}</h2><div class="specs">${specs}</div></div>
+    <button class="ghost" type="button" id="saveShed">${saved?"✓ In My Shed":"+ Save to My Shed"}</button></div>
+    <div id="partsArea">${renderParts(list)}</div>`;
+  $("saveShed").onclick=()=>{if(!shed.some(s=>s.id===m.id&&s.year==year)){shed.push({id:m.id,year});saveShed();$("saveShed").textContent="✓ In My Shed";toast("Saved to My Shed")}};
+}
+function showList(title,sub,list){
+  activeSys="All";
+  $("results").innerHTML=`<div class="machine"><div><div class="eyebrow">${sub}</div><h2>${title}</h2></div></div>
+  <div id="partsArea">${list.length?renderParts(list):'<div class="empty" style="margin-top:16px">No match in the demo catalogue. On the live site this would offer a WhatsApp photo lookup.</div>'}</div>`;
+}
+$("results").addEventListener("click",e=>{
+  const c=e.target.closest("[data-sys]");if(c){activeSys=c.dataset.sys;$("partsArea").innerHTML=renderParts(shown);return}
+  const a=e.target.closest("[data-add]");if(a)addToCart(a.dataset.add);
+});
+
+$("goMachine").onclick=()=>{showMachine(selected(),$("selYear").value,$("selSys").value);$("results").scrollIntoView({behavior:"smooth"})};
+
+/* catalogue-wide search */
+function allParts(){const m=new Map();MACHINES.forEach(x=>partsFor(x).forEach(p=>m.set(p.sku,p)));return [...m.values()]}
+function search(q){q=q.trim().toLowerCase();if(!q)return[];return allParts().filter(p=>[p.sku,p.oem,p.name].join(" ").toLowerCase().includes(q))}
+$("goNumber").onclick=()=>{const q=$("pn").value||"NAP-30412";$("pn").value=q;showList(`“${q}”`,"Part number lookup",search(q));$("results").scrollIntoView({behavior:"smooth"})};
+$("qform").onsubmit=e=>{e.preventDefault();const q=$("q").value;if(!q)return;showList(`“${q}”`,"Search results",search(q));$("results").scrollIntoView({behavior:"smooth"})};
+
+/* size finder */
+const SIZE={
+ pin:{label:"Linkage pins",desc:"Cat 1, 2, 3",fields:[["Category",["Cat 2","Cat 1"]],["Position",["Lower link","Top link","Linch pin"]]]},
+ pto:{label:"PTO shafts",desc:"By spline & length",fields:[["Spline",['1-3/8" 6-spline']],["Length",["Any","1010 mm","1210 mm"]]]},
+ coupler:{label:"Hydraulic couplers",desc:"ISO A sizes",fields:[["Size",['ISO A 1/2"','ISO A 3/8"']]]},
+ disc:{label:"Disc blades",desc:"By diameter",fields:[["Diameter",["610 mm","660 mm"]]]},
+ bearing:{label:"Bearings",desc:"By bearing number",fields:[["Bearing no.",["6205-2RS","6207-2RS","6208-2RS"]]]},
+ point:{label:"Ripper points",desc:"Tines & points",fields:[["Size",["Std 50 mm"]]]}
+};
+opts($("sizeCat"),Object.values(SIZE).map(s=>s.label));
+function sizeKey(){return Object.keys(SIZE).find(k=>SIZE[k].label===$("sizeCat").value)}
+function fillSize(){const s=SIZE[sizeKey()];$("sizeFields").innerHTML=s.fields.map(([l,o],i)=>`<div class="field"><label for="sf${i}">${l}</label><select id="sf${i}">${o.map(v=>`<option>${v}</option>`).join("")}</select></div>`).join("")}
+$("sizeCat").onchange=fillSize;fillSize();
+function runSize(k){
+  const v=[...$("sizeFields").querySelectorAll("select")].map(s=>s.value);
+  const list=STANDARD.filter(p=>{const s=p.spec;if(s.type!==k)return false;
+    if(k==="pin")return s.cat===+v[0].slice(4)&&s.role===({"Lower link":"lower","Top link":"top","Linch pin":"linch"})[v[1]];
+    if(k==="pto")return s.spline===v[0]&&(v[1]==="Any"||s.len===parseInt(v[1]));
+    if(k==="coupler")return s.size===v[0];
+    if(k==="disc")return s.dia===parseInt(v[0]);
+    if(k==="bearing")return s.no===v[0];
+    if(k==="point")return s.size===v[0];});
+  showList(`${SIZE[k].label}: ${v.join(", ")}`,"Find by size",list);$("results").scrollIntoView({behavior:"smooth"});
+}
+$("goSize").onclick=()=>runSize(sizeKey());
+$("sizeCards").innerHTML=Object.entries(SIZE).map(([k,s])=>`<button type="button" class="cat" data-size="${k}"><strong>${s.label}</strong><span>${s.desc}</span></button>`).join("");
+$("sizeCards").onclick=e=>{const b=e.target.closest("[data-size]");if(!b)return;$("sizeCat").value=SIZE[b.dataset.size].label;fillSize();document.querySelector('[data-tab="size"]').click();runSize(b.dataset.size)};
+
+const CATS=[["Filters","Oil, fuel, air, hydraulic"],["Engine","Pumps, belts, gaskets"],["Hydraulics","Pumps, rams, couplers"],["PTO & driveline","Shafts, clutches"],["Linkage","Pins, top links, chains"],["Electrical","Alternators, lights"],["Wear parts","Discs, points, bearings"],["Service kits","Pre-season bundles"]];
+$("catCards").innerHTML=CATS.map(([n,d])=>`<button type="button" class="cat" data-cat="${n}"><strong>${n}</strong><span>${d}</span></button>`).join("");
+$("catCards").onclick=e=>{const b=e.target.closest("[data-cat]");if(!b)return;const n=b.dataset.cat;
+  const list=n==="Service kits"?allParts().filter(p=>p.sku.startsWith("NAP-KIT")):allParts().filter(p=>p.sys===n);
+  showList(n,"Category",list);$("results").scrollIntoView({behavior:"smooth"})};
+
+/* cart */
+function addToCart(sku){const p=allParts().find(x=>x.sku===sku);const l=cart.find(c=>c.sku===sku);l?l.qty++:cart.push({sku,name:p.name,price:p.price,qty:1});renderCart();toast("Added to cart")}
+function renderCart(){
+  $("cartCount").textContent=cart.reduce((a,c)=>a+c.qty,0);
+  $("cartBody").innerHTML=cart.length?cart.map(c=>`<div class="line"><div><b>${c.name}</b><div class="mono">${c.sku}</div></div><div>${R(c.price*c.qty)}</div>
+    <div class="qty"><button type="button" data-q="${c.sku}" data-d="-1" aria-label="Less">−</button>${c.qty}<button type="button" data-q="${c.sku}" data-d="1" aria-label="More">+</button></div></div>`).join(""):'<div class="empty">Your cart is empty.</div>';
+  const tot=cart.reduce((a,c)=>a+c.price*c.qty,0);const vat=Math.round(tot*15/115);
+  $("cartTotals").innerHTML=cart.length?`<div><span>Subtotal excl. VAT</span><span>${R(tot-vat)}</span></div><div><span>VAT 15%</span><span>${R(vat)}</span></div><div><span>Delivery</span><span>Collect in Nigel: free</span></div><div class="big"><span>Total</span><span>${R(tot)}</span></div>`:"";
+}
+$("cartBody").onclick=e=>{const b=e.target.closest("[data-q]");if(!b)return;const l=cart.find(c=>c.sku===b.dataset.q);l.qty+=+b.dataset.d;if(l.qty<1)cart=cart.filter(c=>c!==l);renderCart()};
+$("checkout").onclick=()=>toast(cart.length?"Demo only: on the live site this goes to payment (EFT, card or account).":"Add a part first.");
+
+/* shed */
+function renderShed(){
+  $("shedBody").innerHTML=shed.length?shed.map((s,i)=>{const m=MACHINES.find(x=>x.id===s.id);return `<div class="shed"><div><b>${label(m)}</b><div class="hint">${s.year} · ${m.kind}</div></div><div style="display:flex;gap:6px"><button class="add" type="button" data-open="${i}">Parts</button><button class="ghost" type="button" data-del="${i}" aria-label="Remove">×</button></div></div>`}).join(""):'<div class="empty">No machines saved yet. Pick a machine and tap “Save to My Shed”.</div>';
+}
+$("shedBody").onclick=e=>{const o=e.target.closest("[data-open]"),d=e.target.closest("[data-del]");
+  if(o){const s=shed[o.dataset.open];closeAll();showMachine(MACHINES.find(x=>x.id===s.id),s.year);$("results").scrollIntoView({behavior:"smooth"})}
+  if(d){shed.splice(d.dataset.del,1);saveShed();renderShed()}};
+
+function openDrawer(id){$("scrim").hidden=false;$(id).hidden=false}
+function closeAll(){$("scrim").hidden=true;$("cartDrawer").hidden=true;$("shedDrawer").hidden=true}
+$("cartBtn").onclick=()=>{renderCart();openDrawer("cartDrawer")};
+$("shedBtn").onclick=()=>{renderShed();openDrawer("shedDrawer")};
+$("scrim").onclick=closeAll;document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeAll);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
+
+let tt;function toast(t){const el=$("toast");el.textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,2600)}
+
+/* opening state: an example machine already selected */
+fillMakes();$("selMake").value="Massey Ferguson";fillModels();$("selModel").value="375";fillYears();$("selYear").value="1994";
+showMachine(selected(),"1994");saveShed();renderCart();
+</script>
+</body></html>
