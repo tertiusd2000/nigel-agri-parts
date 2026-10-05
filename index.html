@@ -115,7 +115,12 @@ section.block{padding-block:28px}
 .wa{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--head-bg);color:var(--head-fg);border-radius:10px;padding:22px}
 .wa h2{font-size:1.8rem;text-transform:uppercase}
 .wa p{margin:6px 0 0;opacity:.85;max-width:56ch}
-.wa .num{margin-left:auto;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:12px 16px;font-weight:700;user-select:all}
+.wa .num{margin-left:auto;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:12px 16px;font-weight:700;text-decoration:none;display:grid;gap:2px}
+.wa .num small{font-weight:400;font-size:.8rem}
+.wa .num span{user-select:all;font-variant-numeric:tabular-nums}
+.lang{display:flex;border:1px solid color-mix(in srgb,var(--head-fg) 35%,transparent);border-radius:6px;overflow:hidden}
+.lang button{border:0;background:transparent;color:var(--head-fg);padding:8px 10px;font-weight:700;font-size:.85rem}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 footer{border-top:1px solid var(--line);margin-top:20px;padding-block:24px;color:var(--muted);font-size:.88rem}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
 footer strong{color:var(--ink);display:block;margin-bottom:4px}
@@ -150,8 +155,7 @@ footer strong{color:var(--ink);display:block;margin-bottom:4px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head><body>
-
-<div class="demo">Demo website · sample machines, parts and prices only · not a live shop</div>
+<div class="demo" data-i>Demo website · sample machines, parts and prices only · not a live shop</div>
 
 <header>
   <div class="wrap">
@@ -161,16 +165,20 @@ footer strong{color:var(--ink);display:block;margin-bottom:4px}
         Nigel Agri Parts
       </div>
       <form class="qsearch" id="qform" role="search">
-        <input id="q" type="search" placeholder="Part number, OEM number or part name" aria-label="Search parts">
-        <button type="submit">Search</button>
+        <input id="q" type="search" data-iph="Part number, OEM number or part name" placeholder="Part number, OEM number or part name" aria-label="Search parts">
+        <button type="submit" data-i>Search</button>
       </form>
       <div class="hbtns">
-        <button class="hbtn" id="shedBtn" type="button"><span aria-hidden="true">⌂</span><span class="lbl">My Shed</span> <span class="count" id="shedCount">0</span></button>
-        <button class="hbtn" id="cartBtn" type="button"><span aria-hidden="true">🛒</span><span class="lbl">Cart</span> <span class="count" id="cartCount">0</span></button>
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" id="lang-en" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" id="lang-af" data-lang="af" aria-pressed="false">AF</button>
+        </div>
+        <button class="hbtn" id="shedBtn" type="button"><span aria-hidden="true">⌂</span><span class="lbl" data-i>My Shed</span> <span class="count" id="shedCount">0</span></button>
+        <button class="hbtn" id="cartBtn" type="button"><span aria-hidden="true">🛒</span><span class="lbl" data-i>Cart</span> <span class="count" id="cartCount">0</span></button>
       </div>
     </div>
     <nav class="cats" aria-label="Categories">
-      <a href="#finder">Find by machine</a><a href="#sizes">Find by size</a><a href="#categories">Categories</a><a href="#services">Delivery &amp; trade</a><a href="#whatsapp">Identify a part</a>
+      <a href="#finder" data-i>Find by machine</a><a href="#sizes" data-i>Find by size</a><a href="#categories" data-i>Categories</a><a href="#services" data-i>Delivery &amp; trade</a><a href="#whatsapp" data-i>Identify a part</a>
     </nav>
   </div>
 </header>
@@ -178,45 +186,45 @@ footer strong{color:var(--ink);display:block;margin-bottom:4px}
 <main class="wrap">
   <section class="finder" id="finder">
     <div class="pitch">
-      <div class="eyebrow">Tractor &amp; implement parts · Nigel, Gauteng</div>
-      <h1>The right part for <em>your</em> machine.</h1>
-      <p>Pick your tractor or implement and see only the parts that fit it. Filters, hydraulics, PTO, linkage and wear parts, with OEM and aftermarket options side by side.</p>
-      <div class="trust"><span>Collect in Nigel</span><span>Courier nationwide</span><span>Wrong-part guarantee</span><span>Trade accounts</span></div>
+      <div class="eyebrow" data-i>Tractor &amp; implement parts · Nigel, Gauteng</div>
+      <h1 data-i>The right part for <em>your</em> machine.</h1>
+      <p data-i>Pick your tractor or implement and see only the parts that fit it. Filters, hydraulics, PTO, linkage and wear parts, with OEM and aftermarket options side by side.</p>
+      <div class="trust"><span data-i>Collect in Nigel</span><span data-i>Courier nationwide</span><span data-i>Wrong-part guarantee</span><span data-i>Trade accounts</span></div>
     </div>
 
     <div class="counter">
       <div class="tabs" role="tablist">
-        <button class="tab" role="tab" aria-selected="true" data-tab="machine" id="tab-machine">By machine</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="number" id="tab-number">By part number</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="size" id="tab-size">By size</button>
+        <button class="tab" role="tab" aria-selected="true" data-tab="machine" id="tab-machine" data-i>By machine</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="number" id="tab-number" data-i>By part number</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="size" id="tab-size" data-i>By size</button>
       </div>
 
       <div class="panel" id="p-machine">
         <div class="toggle" role="group" aria-label="Machine type">
-          <button type="button" data-kind="tractor" aria-pressed="true" id="k-tractor">Tractor</button>
-          <button type="button" data-kind="implement" aria-pressed="false" id="k-implement">Implement</button>
+          <button type="button" data-kind="tractor" aria-pressed="true" id="k-tractor" data-i>Tractor</button>
+          <button type="button" data-kind="implement" aria-pressed="false" id="k-implement" data-i>Implement</button>
         </div>
         <div class="steps">
-          <div class="field"><label for="selMake"><b>1</b>Make</label><select id="selMake"></select></div>
-          <div class="field"><label for="selModel"><b>2</b>Model</label><select id="selModel"></select></div>
-          <div class="field"><label for="selYear"><b>3</b>Year</label><select id="selYear"></select></div>
-          <div class="field"><label for="selSys"><b>4</b>System (optional)</label><select id="selSys"></select></div>
+          <div class="field"><label for="selMake"><b>1</b><span data-i>Make</span></label><select id="selMake"></select></div>
+          <div class="field"><label for="selModel"><b>2</b><span data-i>Model</span></label><select id="selModel"></select></div>
+          <div class="field"><label for="selYear"><b>3</b><span data-i>Year</span></label><select id="selYear"></select></div>
+          <div class="field"><label for="selSys"><b>4</b><span data-i>System (optional)</span></label><select id="selSys"></select></div>
         </div>
-        <button class="go" id="goMachine" type="button">Show parts that fit</button>
-        <p class="hint">Not sure of the model? Send a photo of the ID plate on WhatsApp and we'll find it.</p>
+        <button class="go" id="goMachine" type="button" data-i>Show parts that fit</button>
+        <p class="hint" data-i>Not sure of the model? Send a photo of the ID plate on WhatsApp and we'll find it.</p>
       </div>
 
       <div class="panel" id="p-number" hidden>
-        <div class="field"><label for="pn">Part number</label><input id="pn" placeholder="e.g. NAP-30412 or OEM ref FLT-HY-2210"></div>
-        <button class="go" id="goNumber" type="button">Find part &amp; equivalents</button>
-        <p class="hint">Type the number off the old part or your manual. We show the original and cheaper aftermarket equivalents.</p>
+        <div class="field"><label for="pn" data-i>Part number</label><input id="pn" data-iph="e.g. NAP-30412 or OEM ref FLT-HY-2210" placeholder="e.g. NAP-30412 or OEM ref FLT-HY-2210"></div>
+        <button class="go" id="goNumber" type="button" data-i>Find part &amp; equivalents</button>
+        <p class="hint" data-i>Type the number off the old part or your manual. We show the original and cheaper aftermarket equivalents.</p>
       </div>
 
       <div class="panel" id="p-size" hidden>
-        <div class="field"><label for="sizeCat">What are you looking for?</label><select id="sizeCat"></select></div>
+        <div class="field"><label for="sizeCat" data-i>What are you looking for?</label><select id="sizeCat"></select></div>
         <div class="steps" id="sizeFields"></div>
-        <button class="go" id="goSize" type="button">Show matching parts</button>
-        <p class="hint">Standard parts fit many machines. Measure the old part and search by size.</p>
+        <button class="go" id="goSize" type="button" data-i>Show matching parts</button>
+        <p class="hint" data-i>Standard parts fit many machines. Measure the old part and search by size.</p>
       </div>
     </div>
   </section>
@@ -224,56 +232,120 @@ footer strong{color:var(--ink);display:block;margin-bottom:4px}
   <section class="block" id="results" aria-live="polite"></section>
 
   <section class="block" id="sizes">
-    <div class="sechead"><div><div class="eyebrow">Standard parts</div><h2>Shop by size</h2><p>Linkage pins, PTO shafts, couplers, disc blades and bearings follow industry standards. If you know the size, you don't need the model.</p></div></div>
+    <div class="sechead"><div><div class="eyebrow" data-i>Standard parts</div><h2 data-i>Shop by size</h2><p data-i>Linkage pins, PTO shafts, couplers, disc blades and bearings follow industry standards. If you know the size, you don't need the model.</p></div></div>
     <div class="catgrid" id="sizeCards"></div>
   </section>
 
   <section class="block" id="categories">
-    <div class="sechead"><div><div class="eyebrow">Browse</div><h2>Categories</h2></div></div>
+    <div class="sechead"><div><div class="eyebrow" data-i>Browse</div><h2 data-i>Categories</h2></div></div>
     <div class="catgrid" id="catCards"></div>
   </section>
 
   <section class="block" id="services">
     <div class="services">
-      <div class="svc"><div class="eyebrow">Collect</div><h3>Nigel counter</h3><p>Order online, collect same day from our Nigel branch.</p></div>
-      <div class="svc"><div class="eyebrow">Deliver</div><h3>Courier nationwide</h3><p>Door-to-farm courier, rates shown at checkout.</p></div>
-      <div class="svc"><div class="eyebrow">Machine down?</div><h3>Priority dispatch</h3><p>Flag urgent orders during planting and harvest for same-day dispatch.</p></div>
-      <div class="svc"><div class="eyebrow">Trade</div><h3>Accounts &amp; co-ops</h3><p>30-day accounts, contractor pricing and statements online.</p></div>
+      <div class="svc"><div class="eyebrow" data-i>Collect</div><h3 data-i>Nigel counter</h3><p data-i>Order online, collect same day from our Nigel branch.</p></div>
+      <div class="svc"><div class="eyebrow" data-i>Deliver</div><h3 data-i>Courier nationwide</h3><p data-i>Door-to-farm courier, rates shown at checkout.</p></div>
+      <div class="svc"><div class="eyebrow" data-i>Machine down?</div><h3 data-i>Priority dispatch</h3><p data-i>Flag urgent orders during planting and harvest for same-day dispatch.</p></div>
+      <div class="svc"><div class="eyebrow" data-i>Trade</div><h3 data-i>Accounts &amp; co-ops</h3><p data-i>30-day accounts, contractor pricing and statements online.</p></div>
     </div>
   </section>
 
   <section class="block" id="whatsapp">
     <div class="wa">
-      <div><h2>Don't know what it's called?</h2><p>WhatsApp us a photo of the part or your machine's ID plate. We'll identify it and send you a link to buy.</p></div>
-      <div class="num" title="Placeholder number">WhatsApp 0XX XXX XXXX</div>
+      <div><h2 data-i>Don't know what it's called?</h2><p data-i>WhatsApp us a photo of the part or your machine's ID plate. We'll identify it and send you a link to buy.</p></div>
+      <a class="num" href="https://wa.me/27832880639" target="_blank" rel="noopener"><small data-i>Chat on WhatsApp</small><span>+27 83 288 0639</span></a>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap fgrid">
-    <div><strong>Nigel Agri Parts</strong>Tractor and implement parts for Highveld farmers. Name, address and contact details are placeholders.</div>
-    <div><strong>Shop</strong>Find by machine · Find by size · Part number lookup · Seasonal service kits</div>
-    <div><strong>Help</strong>Delivery · Returns &amp; wrong-part guarantee · Warranty · Trade accounts</div>
-    <div><strong>Pay with</strong>EFT · Card · Instant EFT · Account. All prices include 15% VAT.</div>
+    <div><strong>Nigel Agri Parts</strong><span data-i>Tractor and implement parts for Highveld farmers. Name and address are placeholders.</span><br>WhatsApp +27 83 288 0639</div>
+    <div><strong data-i>Shop</strong><span data-i>Find by machine · Find by size · Part number lookup · Seasonal service kits</span></div>
+    <div><strong data-i>Help</strong><span data-i>Delivery · Returns &amp; wrong-part guarantee · Warranty · Trade accounts</span></div>
+    <div><strong data-i>Pay with</strong><span data-i>EFT · Card · Instant EFT · Account. All prices include 15% VAT.</span></div>
   </div>
 </footer>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="cartDrawer" hidden aria-label="Cart">
-  <div class="dhead"><h2>Your cart</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div class="dhead"><h2 data-i>Your cart</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
   <div class="dbody" id="cartBody"></div>
   <div class="totals" id="cartTotals"></div>
-  <button class="go" id="checkout" type="button" style="margin-top:12px">Checkout</button>
+  <button class="go" id="checkout" type="button" style="margin-top:12px" data-i>Checkout</button>
 </aside>
 <aside class="drawer" id="shedDrawer" hidden aria-label="My Shed">
-  <div class="dhead"><h2>My Shed</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
-  <p class="hint">Save your machines once. Next time, one tap shows the parts that fit.</p>
+  <div class="dhead"><h2 data-i>My Shed</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <p class="hint" data-i>Save your machines once. Next time, one tap shows the parts that fit.</p>
   <div class="dbody" id="shedBody" style="margin-top:12px"></div>
 </aside>
 <div class="toast" id="toast" hidden></div>
 
 <script>
+/* ---------- Afrikaans translations (English text is the key) ---------- */
+const AF={
+"Demo website · sample machines, parts and prices only · not a live shop":"Demo-webwerf · slegs voorbeeld-masjiene, -onderdele en -pryse · nie 'n regte winkel nie",
+"Part number, OEM number or part name":"Onderdeelnommer, OEM-nommer of naam",
+"Search":"Soek","My Shed":"My Skuur","Cart":"Mandjie",
+"Find by machine":"Soek volgens masjien","Find by size":"Soek volgens grootte","Categories":"Kategorieë","Delivery &amp; trade":"Aflewering &amp; handel","Identify a part":"Identifiseer 'n onderdeel",
+"Tractor &amp; implement parts · Nigel, Gauteng":"Trekker- &amp; implementonderdele · Nigel, Gauteng",
+"The right part for <em>your</em> machine.":"Die regte onderdeel vir <em>jóú</em> masjien.",
+"Pick your tractor or implement and see only the parts that fit it. Filters, hydraulics, PTO, linkage and wear parts, with OEM and aftermarket options side by side.":"Kies jou trekker of implement en sien net die onderdele wat daarop pas. Filters, hidroulika, kragaftakker, hefstelsel en slytonderdele, met oorspronklike en alternatiewe opsies langs mekaar.",
+"Collect in Nigel":"Haal af in Nigel","Courier nationwide":"Koerier landwyd","Wrong-part guarantee":"Verkeerde-onderdeel-waarborg","Trade accounts":"Handelsrekeninge",
+"By machine":"Volgens masjien","By part number":"Volgens nommer","By size":"Volgens grootte",
+"Tractor":"Trekker","Implement":"Implement","Make":"Fabrikaat","Model":"Model","Year":"Jaar","System (optional)":"Stelsel (opsioneel)",
+"Show parts that fit":"Wys onderdele wat pas",
+"Not sure of the model? Send a photo of the ID plate on WhatsApp and we'll find it.":"Nie seker van die model nie? Stuur 'n foto van die ID-plaatjie op WhatsApp en ons soek dit vir jou uit.",
+"Part number":"Onderdeelnommer","e.g. NAP-30412 or OEM ref FLT-HY-2210":"bv. NAP-30412 of OEM-verw. FLT-HY-2210",
+"Find part &amp; equivalents":"Soek onderdeel &amp; ekwivalente",
+"Type the number off the old part or your manual. We show the original and cheaper aftermarket equivalents.":"Tik die nommer van die ou onderdeel of jou handleiding in. Ons wys die oorspronklike en goedkoper alternatiewe.",
+"What are you looking for?":"Waarna soek jy?","Show matching parts":"Wys passende onderdele",
+"Standard parts fit many machines. Measure the old part and search by size.":"Standaardonderdele pas op baie masjiene. Meet die ou onderdeel en soek volgens grootte.",
+"Standard parts":"Standaardonderdele","Shop by size":"Koop volgens grootte",
+"Linkage pins, PTO shafts, couplers, disc blades and bearings follow industry standards. If you know the size, you don't need the model.":"Hefpenne, kragaftakker-asse, koppelstukke, skottels en laers volg bedryfstandaarde. As jy die grootte ken, het jy nie die model nodig nie.",
+"Browse":"Blaai",
+"Collect":"Afhaal","Nigel counter":"Nigel-toonbank","Order online, collect same day from our Nigel branch.":"Bestel aanlyn en haal dieselfde dag by ons Nigel-tak af.",
+"Deliver":"Aflewering","Door-to-farm courier, rates shown at checkout.":"Koerier tot by die plaas, tariewe wys by betaling.",
+"Machine down?":"Masjien staan?","Priority dispatch":"Voorrang-versending","Flag urgent orders during planting and harvest for same-day dispatch.":"Merk dringende bestellings tydens plant- en oestyd vir versending dieselfde dag.",
+"Trade":"Handel","Accounts &amp; co-ops":"Rekeninge &amp; koöperasies","30-day accounts, contractor pricing and statements online.":"30-dae-rekeninge, kontrakteurspryse en state aanlyn.",
+"Don't know what it's called?":"Weet nie wat dit genoem word nie?",
+"WhatsApp us a photo of the part or your machine's ID plate. We'll identify it and send you a link to buy.":"WhatsApp vir ons 'n foto van die onderdeel of jou masjien se ID-plaatjie. Ons identifiseer dit en stuur vir jou 'n skakel om te koop.",
+"Chat on WhatsApp":"Gesels op WhatsApp",
+"Tractor and implement parts for Highveld farmers. Name and address are placeholders.":"Trekker- en implementonderdele vir Hoëveldse boere. Naam en adres is plekhouers.",
+"Shop":"Winkel","Find by machine · Find by size · Part number lookup · Seasonal service kits":"Volgens masjien · Volgens grootte · Nommer-opsoek · Seisoenale dienspakkette",
+"Help":"Hulp","Delivery · Returns &amp; wrong-part guarantee · Warranty · Trade accounts":"Aflewering · Terugsendings &amp; verkeerde-onderdeel-waarborg · Waarborg · Handelsrekeninge",
+"Pay with":"Betaal met","EFT · Card · Instant EFT · Account. All prices include 15% VAT.":"EFT · Kaart · Kitsoorplasing · Rekening. Alle pryse sluit 15% BTW in.",
+"Your cart":"Jou mandjie","Checkout":"Betaal",
+"Save your machines once. Next time, one tap shows the parts that fit.":"Stoor jou masjiene een keer. Volgende keer wys een tik die onderdele wat pas.",
+/* dynamic */
+"In stock · Nigel":"In voorraad · Nigel","2–3 days":"2–3 dae","Order in · 5–7 days":"Word bestel · 5–7 dae",
+"Filters":"Filters","Engine":"Enjin","Hydraulics":"Hidroulika","PTO & driveline":"Kragaftakker & aandrywing","Linkage":"Hefstelsel","Electrical":"Elektries","Wear parts":"Slytonderdele","Service kits":"Dienspakkette","All":"Alles","All systems":"Alle stelsels",
+"Our code":"Ons kode","OEM ref":"OEM-verw.","STANDARD PART · fits {n} machines":"STANDAARDONDERDEEL · pas op {n} masjiene","Aftermarket option:":"Alternatiewe opsie:","incl. VAT":"insl. BTW","Add":"Voeg by",
+"No parts in this group yet.":"Nog geen onderdele in hierdie groep nie.","Parts that fit":"Onderdele wat pas",
+"Couplers":"Koppelstukke","Discs":"Skottels","Hub bearing":"Naaflaer","PTO":"Kragaftakker",
+"✓ In My Shed":"✓ In My Skuur","+ Save to My Shed":"+ Stoor in My Skuur","Saved to My Shed":"Gestoor in My Skuur",
+"Part number lookup":"Nommer-opsoek","Search results":"Soekresultate","Category":"Kategorie",
+"No match in the demo catalogue. On the live site this would offer a WhatsApp photo lookup.":"Geen passing in die demo-katalogus nie. Op die regte webwerf kan jy dan 'n foto op WhatsApp stuur.",
+"Linkage pins":"Hefpenne","Cat 1, 2, 3":"Kat 1, 2, 3","PTO shafts":"Kragaftakker-asse","By spline & length":"Volgens keep & lengte","Hydraulic couplers":"Hidrouliese koppelstukke","ISO A sizes":"ISO A-groottes","Disc blades":"Skottels","By diameter":"Volgens deursnee","Bearings":"Laers","By bearing number":"Volgens laernommer","Ripper points":"Skeurderpunte","Tines & points":"Tande & punte",
+"Position":"Posisie","Spline":"Keep","Length":"Lengte","Size":"Grootte","Diameter":"Deursnee","Bearing no.":"Laernr.",
+"Cat 1":"Kat 1","Cat 2":"Kat 2","Lower link":"Onderste arm","Top link":"Boonste stang","Linch pin":"Knippen","Any":"Enige",
+"Oil, fuel, air, hydraulic":"Olie, brandstof, lug, hidroulies","Pumps, belts, gaskets":"Pompe, bande, pakkings","Pumps, rams, couplers":"Pompe, silinders, koppelstukke","Shafts, clutches":"Asse, koppelaars","Pins, top links, chains":"Penne, boonste stange, kettings","Alternators, lights":"Alternators, ligte","Discs, points, bearings":"Skottels, punte, laers","Pre-season bundles":"Voorseisoen-pakkette",
+"Your cart is empty.":"Jou mandjie is leeg.","Subtotal excl. VAT":"Subtotaal uitsl. BTW","VAT 15%":"BTW 15%","Delivery":"Aflewering","Collect in Nigel: free":"Afhaal in Nigel: gratis","Total":"Totaal",
+"Demo only: on the live site this goes to payment (EFT, card or account).":"Slegs demo: op die regte webwerf gaan dit na betaling (EFT, kaart of rekening).","Add a part first.":"Voeg eers 'n onderdeel by.","Added to cart":"By mandjie gevoeg",
+"Parts":"Onderdele","tractor":"trekker","implement":"implement",
+"No machines saved yet. Pick a machine and tap “Save to My Shed”.":"Nog geen masjiene gestoor nie. Kies 'n masjien en tik “Stoor in My Skuur”."
+};
+let lang="en";
+try{if(localStorage.getItem("nap-lang")==="af")lang="af"}catch(e){}
+const t=(s,v)=>{let r=lang==="af"?(AF[s]||s):s;if(v)for(const k in v)r=r.replace("{"+k+"}",v[k]);return r};
+
+function applyStatic(){
+  document.documentElement.lang=lang==="af"?"af":"en";
+  document.querySelectorAll("[data-i]").forEach(el=>{if(el.dataset.en===undefined)el.dataset.en=el.innerHTML.trim();el.innerHTML=t(el.dataset.en)});
+  document.querySelectorAll("[data-iph]").forEach(el=>el.placeholder=t(el.dataset.iph));
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===lang));
+}
+
 const SYSTEMS=["Filters","Engine","Hydraulics","PTO & driveline","Linkage","Electrical","Wear parts"];
 
 /* Sample machines. Attributes drive the standard-parts matching. */
@@ -293,7 +365,6 @@ const MACHINES=[
  {id:"planter4",kind:"implement",make:"Planter",model:"4-row vacuum planter",years:[2005,2024],cat:2,bearing:"6205-2RS",pto:'1-3/8" 6-spline'}
 ];
 
-/* Model-specific part templates (sample prices in Rand incl. VAT) */
 const T_TRACTOR=[
  ["Filters","Engine oil filter","FLT-OL",165,"ok"],
  ["Filters","Fuel filter, primary","FLT-FU",210,"ok"],
@@ -313,7 +384,6 @@ const T_TRACTOR=[
  ["Electrical","LED work light, 27 W","ELE-WL",450,"ok"]
 ];
 
-/* Standard parts, matched by spec instead of model */
 const STANDARD=[
  {sys:"Linkage",name:"Lower link pin, Cat 2, 28 mm",sku:"NAP-20028",price:145,stock:"ok",spec:{type:"pin",cat:2,role:"lower"}},
  {sys:"Linkage",name:"Top link pin, Cat 2, 25 mm",sku:"NAP-20025",price:125,stock:"ok",spec:{type:"pin",cat:2,role:"top"}},
@@ -330,16 +400,18 @@ const STANDARD=[
  {sys:"Wear parts",name:"Disc blade 610 mm, plain, 5 mm",sku:"NAP-50611",price:720,stock:"ok",spec:{type:"disc",dia:610}},
  {sys:"Wear parts",name:"Disc blade 660 mm, notched, 6 mm",sku:"NAP-50660",price:960,stock:"warn",spec:{type:"disc",dia:660}},
  {sys:"Wear parts",name:"Ripper point, standard 50 mm",sku:"NAP-51050",price:265,stock:"ok",spec:{type:"point",size:"Std 50 mm"}},
- {sys:"Engine",name:"Bearing 6205-2RS (25 × 52 × 15)",sku:"NAP-60205",price:95,stock:"ok",spec:{type:"bearing",no:"6205-2RS"}},
- {sys:"Engine",name:"Bearing 6207-2RS (35 × 72 × 17)",sku:"NAP-60207",price:165,stock:"ok",spec:{type:"bearing",no:"6207-2RS"}},
- {sys:"Engine",name:"Bearing 6208-2RS (40 × 80 × 18)",sku:"NAP-60208",price:195,stock:"ok",spec:{type:"bearing",no:"6208-2RS"}}
+ {sys:"Wear parts",name:"Bearing 6205-2RS (25 × 52 × 15)",sku:"NAP-60205",price:95,stock:"ok",spec:{type:"bearing",no:"6205-2RS"}},
+ {sys:"Wear parts",name:"Bearing 6207-2RS (35 × 72 × 17)",sku:"NAP-60207",price:165,stock:"ok",spec:{type:"bearing",no:"6207-2RS"}},
+ {sys:"Wear parts",name:"Bearing 6208-2RS (40 × 80 × 18)",sku:"NAP-60208",price:195,stock:"ok",spec:{type:"bearing",no:"6208-2RS"}}
 ];
-STANDARD.forEach(p=>{p.std=true;if(p.sys==="Engine"&&p.spec.type==="bearing")p.sys="Wear parts";});
+STANDARD.forEach(p=>p.std=true);
 
 const STOCK={ok:["In stock · Nigel","ok"],warn:["2–3 days","warn"],info:["Order in · 5–7 days","info"]};
 
 function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+const partCache={};
 function partsFor(m){
+  if(partCache[m.id])return partCache[m.id];
   let out=[];
   if(m.kind==="tractor"){
     out=T_TRACTOR.map(([sys,name,code,base,stock],i)=>{
@@ -347,7 +419,7 @@ function partsFor(m){
       const factor=1+((h%40)-15)/100*(m.hp>100?1.4:1);
       const price=Math.round(base*factor/5)*5;
       return {sys,name,sku:`NAP-${code}-${m.id.toUpperCase().slice(0,5)}`,oem:`${code}-${(h%9000)+1000}`,
-        alt: i%3!==1 ? {brand:"Aftermarket",price:Math.round(price*0.72/5)*5}:null,price,stock,fits:[m.id]};
+        alt: i%3!==1 ? {price:Math.round(price*0.72/5)*5}:null,price,stock,fits:[m.id]};
     });
   }
   const std=STANDARD.filter(p=>{
@@ -359,49 +431,46 @@ function partsFor(m){
     if(s.type==="point")return m.point===s.size;
     if(s.type==="bearing")return m.bearing===s.no;
   });
-  return out.concat(std);
+  return partCache[m.id]=out.concat(std);
 }
-function fitsList(p){
-  if(p.fits)return p.fits.map(id=>label(MACHINES.find(m=>m.id===id)));
-  return MACHINES.filter(m=>partsFor(m).some(x=>x.sku===p.sku)).map(label);
-}
+function fitsCount(p){return MACHINES.filter(m=>partsFor(m).some(x=>x.sku===p.sku)).length}
 const label=m=>`${m.make} ${m.model}`;
-const R=n=>"R"+n.toLocaleString("en-ZA").replace(/,/g," ");
+const R=n=>"R"+n.toLocaleString("en-ZA").replace(/[, ]/g," ");
 
-/* state */
-let kind="tractor", cart=[], shed=[], current=null, activeSys="All";
+let kind="tractor", cart=[], shed=[], activeSys="All", view=null;
 try{shed=JSON.parse(localStorage.getItem("nap-shed")||"[]")}catch(e){shed=[]}
 function saveShed(){try{localStorage.setItem("nap-shed",JSON.stringify(shed))}catch(e){} document.getElementById("shedCount").textContent=shed.length}
 
 const $=id=>document.getElementById(id);
-function opts(el,list,keep){const prev=el.value;el.innerHTML=list.map(v=>`<option>${v}</option>`).join("");if(keep&&list.includes(prev))el.value=prev}
+/* list items: string, or [value,text] */
+function opts(el,list,keep){const prev=el.value;el.innerHTML=list.map(v=>Array.isArray(v)?`<option value="${v[0].replace(/"/g,"&quot;")}">${v[1]}</option>`:`<option>${v}</option>`).join("");const vals=list.map(v=>Array.isArray(v)?v[0]:v);if(keep&&vals.includes(prev))el.value=prev}
 
 function fillMakes(){opts($("selMake"),[...new Set(MACHINES.filter(m=>m.kind===kind).map(m=>m.make))]);fillModels()}
 function fillModels(){opts($("selModel"),MACHINES.filter(m=>m.kind===kind&&m.make===$("selMake").value).map(m=>m.model));fillYears()}
 function fillYears(){const m=selected();const ys=[];for(let y=m.years[1];y>=m.years[0];y--)ys.push(y);opts($("selYear"),ys.map(String))}
 function selected(){return MACHINES.find(m=>m.kind===kind&&m.make===$("selMake").value&&m.model===$("selModel").value)}
-opts($("selSys"),["All systems",...SYSTEMS]);
+function fillSys(){opts($("selSys"),[["All",t("All systems")],...SYSTEMS.map(s=>[s,t(s)])],true)}
 
 document.querySelectorAll("[data-kind]").forEach(b=>b.onclick=()=>{kind=b.dataset.kind;document.querySelectorAll("[data-kind]").forEach(x=>x.setAttribute("aria-pressed",x===b));fillMakes()});
 $("selMake").onchange=fillModels;$("selModel").onchange=fillYears;
 
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
-  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
-  ["machine","number","size"].forEach(k=>$("p-"+k).hidden=k!==t.dataset.tab);
+document.querySelectorAll(".tab").forEach(tb=>tb.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===tb));
+  ["machine","number","size"].forEach(k=>$("p-"+k).hidden=k!==tb.dataset.tab);
 });
 
 function card(p){
   const [st,cls]=STOCK[p.stock];
   return `<article class="part">
-    <div class="top"><span class="sys">${p.sys}</span><span class="pill ${cls}">${st}</span></div>
+    <div class="top"><span class="sys">${t(p.sys)}</span><span class="pill ${cls}">${t(st)}</span></div>
     <h3>${p.name}</h3>
     <div class="refs">
-      <div>Our code <span class="mono">${p.sku}</span></div>
-      ${p.oem?`<div>OEM ref <span class="mono">${p.oem}</span></div>`:""}
-      ${p.std?`<div><span class="std">STANDARD PART · fits ${fitsList(p).length} machines</span></div>`:""}
-      ${p.alt?`<div>Aftermarket option: <b>${R(p.alt.price)}</b></div>`:""}
+      <div>${t("Our code")} <span class="mono">${p.sku}</span></div>
+      ${p.oem?`<div>${t("OEM ref")} <span class="mono">${p.oem}</span></div>`:""}
+      ${p.std?`<div><span class="std">${t("STANDARD PART · fits {n} machines",{n:fitsCount(p)})}</span></div>`:""}
+      ${p.alt?`<div>${t("Aftermarket option:")} <b>${R(p.alt.price)}</b></div>`:""}
     </div>
-    <div class="buy"><div class="price">${R(p.price)}<small>incl. VAT</small></div><button class="add" type="button" data-add="${p.sku}">Add</button></div>
+    <div class="buy"><div class="price">${R(p.price)}<small>${t("incl. VAT")}</small></div><button class="add" type="button" data-add="${p.sku}">${t("Add")}</button></div>
   </article>`;
 }
 let shown=[];
@@ -411,38 +480,40 @@ function renderParts(list){
   const sysList=["All",...SYSTEMS.filter(s=>counts[s])];
   if(!sysList.includes(activeSys))activeSys="All";
   const vis=activeSys==="All"?list:list.filter(p=>p.sys===activeSys);
-  return `<div class="chips">${sysList.map(s=>`<button type="button" class="chip" data-sys="${s}" aria-pressed="${s===activeSys}">${s}<span>${s==="All"?list.length:counts[s]}</span></button>`).join("")}</div>
-  <div class="grid">${vis.map(card).join("")||'<div class="empty">No parts in this group yet.</div>'}</div>`;
+  return `<div class="chips">${sysList.map(s=>`<button type="button" class="chip" data-sys="${s}" aria-pressed="${s===activeSys}">${t(s)}<span>${s==="All"?list.length:counts[s]}</span></button>`).join("")}</div>
+  <div class="grid">${vis.map(card).join("")||`<div class="empty">${t("No parts in this group yet.")}</div>`}</div>`;
 }
 function showMachine(m,year,sys){
-  current={m,year};activeSys=sys&&sys!=="All systems"?sys:"All";
+  if(sys!==undefined)activeSys=sys||"All";
+  view=()=>showMachine(m,year);
   const list=partsFor(m);
   const saved=shed.some(s=>s.id===m.id&&s.year==year);
-  const specs=[m.hp?`<span><b>${m.hp} hp</b></span>`:"",`<span>Linkage <b>Cat ${m.cat}</b></span>`,m.pto?`<span>PTO <b>${m.pto}</b></span>`:"",m.coupler?`<span>Couplers <b>${m.coupler}</b></span>`:"",m.disc?`<span>Discs <b>${m.disc} mm</b></span>`:"",m.bearing?`<span>Hub bearing <b>${m.bearing}</b></span>`:""].join("");
-  $("results").innerHTML=`<div class="machine"><div><div class="eyebrow">Parts that fit</div><h2>${label(m)} · ${year}</h2><div class="specs">${specs}</div></div>
-    <button class="ghost" type="button" id="saveShed">${saved?"✓ In My Shed":"+ Save to My Shed"}</button></div>
+  const specs=[m.hp?`<span><b>${m.hp} hp</b></span>`:"",`<span>${t("Linkage")} <b>Cat ${m.cat}</b></span>`,m.pto?`<span>${t("PTO")} <b>${m.pto}</b></span>`:"",m.coupler?`<span>${t("Couplers")} <b>${m.coupler}</b></span>`:"",m.disc?`<span>${t("Discs")} <b>${m.disc} mm</b></span>`:"",m.bearing?`<span>${t("Hub bearing")} <b>${m.bearing}</b></span>`:""].join("");
+  $("results").innerHTML=`<div class="machine"><div><div class="eyebrow">${t("Parts that fit")}</div><h2>${label(m)} · ${year}</h2><div class="specs">${specs}</div></div>
+    <button class="ghost" type="button" id="saveShed">${saved?t("✓ In My Shed"):t("+ Save to My Shed")}</button></div>
     <div id="partsArea">${renderParts(list)}</div>`;
-  $("saveShed").onclick=()=>{if(!shed.some(s=>s.id===m.id&&s.year==year)){shed.push({id:m.id,year});saveShed();$("saveShed").textContent="✓ In My Shed";toast("Saved to My Shed")}};
+  $("saveShed").onclick=()=>{if(!shed.some(s=>s.id===m.id&&s.year==year)){shed.push({id:m.id,year});saveShed();$("saveShed").textContent=t("✓ In My Shed");toast(t("Saved to My Shed"))}};
 }
-function showList(title,sub,list){
-  activeSys="All";
-  $("results").innerHTML=`<div class="machine"><div><div class="eyebrow">${sub}</div><h2>${title}</h2></div></div>
-  <div id="partsArea">${list.length?renderParts(list):'<div class="empty" style="margin-top:16px">No match in the demo catalogue. On the live site this would offer a WhatsApp photo lookup.</div>'}</div>`;
+function showList(title,sub,list,keepSys){
+  if(!keepSys)activeSys="All";
+  view=()=>showList(typeof title==="function"?title:title,sub,list,true);
+  const ttl=typeof title==="function"?title():title;
+  $("results").innerHTML=`<div class="machine"><div><div class="eyebrow">${t(sub)}</div><h2>${ttl}</h2></div></div>
+  <div id="partsArea">${list.length?renderParts(list):`<div class="empty" style="margin-top:16px">${t("No match in the demo catalogue. On the live site this would offer a WhatsApp photo lookup.")}</div>`}</div>`;
 }
 $("results").addEventListener("click",e=>{
   const c=e.target.closest("[data-sys]");if(c){activeSys=c.dataset.sys;$("partsArea").innerHTML=renderParts(shown);return}
   const a=e.target.closest("[data-add]");if(a)addToCart(a.dataset.add);
 });
+const scrollRes=()=>$("results").scrollIntoView({behavior:"smooth"});
 
-$("goMachine").onclick=()=>{showMachine(selected(),$("selYear").value,$("selSys").value);$("results").scrollIntoView({behavior:"smooth"})};
+$("goMachine").onclick=()=>{showMachine(selected(),$("selYear").value,$("selSys").value);scrollRes()};
 
-/* catalogue-wide search */
 function allParts(){const m=new Map();MACHINES.forEach(x=>partsFor(x).forEach(p=>m.set(p.sku,p)));return [...m.values()]}
 function search(q){q=q.trim().toLowerCase();if(!q)return[];return allParts().filter(p=>[p.sku,p.oem,p.name].join(" ").toLowerCase().includes(q))}
-$("goNumber").onclick=()=>{const q=$("pn").value||"NAP-30412";$("pn").value=q;showList(`“${q}”`,"Part number lookup",search(q));$("results").scrollIntoView({behavior:"smooth"})};
-$("qform").onsubmit=e=>{e.preventDefault();const q=$("q").value;if(!q)return;showList(`“${q}”`,"Search results",search(q));$("results").scrollIntoView({behavior:"smooth"})};
+$("goNumber").onclick=()=>{const q=$("pn").value||"NAP-30412";$("pn").value=q;showList(`“${q}”`,"Part number lookup",search(q));scrollRes()};
+$("qform").onsubmit=e=>{e.preventDefault();const q=$("q").value;if(!q)return;showList(`“${q}”`,"Search results",search(q));scrollRes()};
 
-/* size finder */
 const SIZE={
  pin:{label:"Linkage pins",desc:"Cat 1, 2, 3",fields:[["Category",["Cat 2","Cat 1"]],["Position",["Lower link","Top link","Linch pin"]]]},
  pto:{label:"PTO shafts",desc:"By spline & length",fields:[["Spline",['1-3/8" 6-spline']],["Length",["Any","1010 mm","1210 mm"]]]},
@@ -451,10 +522,14 @@ const SIZE={
  bearing:{label:"Bearings",desc:"By bearing number",fields:[["Bearing no.",["6205-2RS","6207-2RS","6208-2RS"]]]},
  point:{label:"Ripper points",desc:"Tines & points",fields:[["Size",["Std 50 mm"]]]}
 };
-opts($("sizeCat"),Object.values(SIZE).map(s=>s.label));
-function sizeKey(){return Object.keys(SIZE).find(k=>SIZE[k].label===$("sizeCat").value)}
-function fillSize(){const s=SIZE[sizeKey()];$("sizeFields").innerHTML=s.fields.map(([l,o],i)=>`<div class="field"><label for="sf${i}">${l}</label><select id="sf${i}">${o.map(v=>`<option>${v}</option>`).join("")}</select></div>`).join("")}
-$("sizeCat").onchange=fillSize;fillSize();
+function fillSizeCat(){opts($("sizeCat"),Object.entries(SIZE).map(([k,s])=>[k,t(s.label)]),true)}
+function fillSize(){
+  const prev=[...$("sizeFields").querySelectorAll("select")].map(s=>s.value);
+  const s=SIZE[$("sizeCat").value];
+  $("sizeFields").innerHTML=s.fields.map(([l,o],i)=>`<div class="field"><label for="sf${i}">${t(l)}</label><select id="sf${i}">${o.map(v=>`<option value="${v.replace(/"/g,"&quot;")}">${t(v).replace("Cat ",lang==="af"?"Kat ":"Cat ")}</option>`).join("")}</select></div>`).join("");
+  $("sizeFields").querySelectorAll("select").forEach((el,i)=>{if(prev[i]&&[...el.options].some(o=>o.value===prev[i]))el.value=prev[i]});
+}
+$("sizeCat").onchange=()=>{$("sizeFields").innerHTML="";fillSize()};
 function runSize(k){
   const v=[...$("sizeFields").querySelectorAll("select")].map(s=>s.value);
   const list=STANDARD.filter(p=>{const s=p.spec;if(s.type!==k)return false;
@@ -464,36 +539,34 @@ function runSize(k){
     if(k==="disc")return s.dia===parseInt(v[0]);
     if(k==="bearing")return s.no===v[0];
     if(k==="point")return s.size===v[0];});
-  showList(`${SIZE[k].label}: ${v.join(", ")}`,"Find by size",list);$("results").scrollIntoView({behavior:"smooth"});
+  showList(()=>`${t(SIZE[k].label)}: ${v.map(x=>t(x)).join(", ")}`,"Find by size",list);scrollRes();
 }
-$("goSize").onclick=()=>runSize(sizeKey());
-$("sizeCards").innerHTML=Object.entries(SIZE).map(([k,s])=>`<button type="button" class="cat" data-size="${k}"><strong>${s.label}</strong><span>${s.desc}</span></button>`).join("");
-$("sizeCards").onclick=e=>{const b=e.target.closest("[data-size]");if(!b)return;$("sizeCat").value=SIZE[b.dataset.size].label;fillSize();document.querySelector('[data-tab="size"]').click();runSize(b.dataset.size)};
+$("goSize").onclick=()=>runSize($("sizeCat").value);
+function renderSizeCards(){$("sizeCards").innerHTML=Object.entries(SIZE).map(([k,s])=>`<button type="button" class="cat" data-size="${k}"><strong>${t(s.label)}</strong><span>${t(s.desc)}</span></button>`).join("")}
+$("sizeCards").onclick=e=>{const b=e.target.closest("[data-size]");if(!b)return;$("sizeCat").value=b.dataset.size;$("sizeFields").innerHTML="";fillSize();document.querySelector('[data-tab="size"]').click();runSize(b.dataset.size)};
 
 const CATS=[["Filters","Oil, fuel, air, hydraulic"],["Engine","Pumps, belts, gaskets"],["Hydraulics","Pumps, rams, couplers"],["PTO & driveline","Shafts, clutches"],["Linkage","Pins, top links, chains"],["Electrical","Alternators, lights"],["Wear parts","Discs, points, bearings"],["Service kits","Pre-season bundles"]];
-$("catCards").innerHTML=CATS.map(([n,d])=>`<button type="button" class="cat" data-cat="${n}"><strong>${n}</strong><span>${d}</span></button>`).join("");
+function renderCats(){$("catCards").innerHTML=CATS.map(([n,d])=>`<button type="button" class="cat" data-cat="${n}"><strong>${t(n)}</strong><span>${t(d)}</span></button>`).join("")}
 $("catCards").onclick=e=>{const b=e.target.closest("[data-cat]");if(!b)return;const n=b.dataset.cat;
   const list=n==="Service kits"?allParts().filter(p=>p.sku.startsWith("NAP-KIT")):allParts().filter(p=>p.sys===n);
-  showList(n,"Category",list);$("results").scrollIntoView({behavior:"smooth"})};
+  showList(()=>t(n),"Category",list);scrollRes()};
 
-/* cart */
-function addToCart(sku){const p=allParts().find(x=>x.sku===sku);const l=cart.find(c=>c.sku===sku);l?l.qty++:cart.push({sku,name:p.name,price:p.price,qty:1});renderCart();toast("Added to cart")}
+function addToCart(sku){const p=allParts().find(x=>x.sku===sku);const l=cart.find(c=>c.sku===sku);l?l.qty++:cart.push({sku,name:p.name,price:p.price,qty:1});renderCart();toast(t("Added to cart"))}
 function renderCart(){
   $("cartCount").textContent=cart.reduce((a,c)=>a+c.qty,0);
   $("cartBody").innerHTML=cart.length?cart.map(c=>`<div class="line"><div><b>${c.name}</b><div class="mono">${c.sku}</div></div><div>${R(c.price*c.qty)}</div>
-    <div class="qty"><button type="button" data-q="${c.sku}" data-d="-1" aria-label="Less">−</button>${c.qty}<button type="button" data-q="${c.sku}" data-d="1" aria-label="More">+</button></div></div>`).join(""):'<div class="empty">Your cart is empty.</div>';
+    <div class="qty"><button type="button" data-q="${c.sku}" data-d="-1" aria-label="Less">−</button>${c.qty}<button type="button" data-q="${c.sku}" data-d="1" aria-label="More">+</button></div></div>`).join(""):`<div class="empty">${t("Your cart is empty.")}</div>`;
   const tot=cart.reduce((a,c)=>a+c.price*c.qty,0);const vat=Math.round(tot*15/115);
-  $("cartTotals").innerHTML=cart.length?`<div><span>Subtotal excl. VAT</span><span>${R(tot-vat)}</span></div><div><span>VAT 15%</span><span>${R(vat)}</span></div><div><span>Delivery</span><span>Collect in Nigel: free</span></div><div class="big"><span>Total</span><span>${R(tot)}</span></div>`:"";
+  $("cartTotals").innerHTML=cart.length?`<div><span>${t("Subtotal excl. VAT")}</span><span>${R(tot-vat)}</span></div><div><span>${t("VAT 15%")}</span><span>${R(vat)}</span></div><div><span>${t("Delivery")}</span><span>${t("Collect in Nigel: free")}</span></div><div class="big"><span>${t("Total")}</span><span>${R(tot)}</span></div>`:"";
 }
 $("cartBody").onclick=e=>{const b=e.target.closest("[data-q]");if(!b)return;const l=cart.find(c=>c.sku===b.dataset.q);l.qty+=+b.dataset.d;if(l.qty<1)cart=cart.filter(c=>c!==l);renderCart()};
-$("checkout").onclick=()=>toast(cart.length?"Demo only: on the live site this goes to payment (EFT, card or account).":"Add a part first.");
+$("checkout").onclick=()=>toast(cart.length?t("Demo only: on the live site this goes to payment (EFT, card or account)."):t("Add a part first."));
 
-/* shed */
 function renderShed(){
-  $("shedBody").innerHTML=shed.length?shed.map((s,i)=>{const m=MACHINES.find(x=>x.id===s.id);return `<div class="shed"><div><b>${label(m)}</b><div class="hint">${s.year} · ${m.kind}</div></div><div style="display:flex;gap:6px"><button class="add" type="button" data-open="${i}">Parts</button><button class="ghost" type="button" data-del="${i}" aria-label="Remove">×</button></div></div>`}).join(""):'<div class="empty">No machines saved yet. Pick a machine and tap “Save to My Shed”.</div>';
+  $("shedBody").innerHTML=shed.length?shed.map((s,i)=>{const m=MACHINES.find(x=>x.id===s.id);return `<div class="shed"><div><b>${label(m)}</b><div class="hint">${s.year} · ${t(m.kind)}</div></div><div style="display:flex;gap:6px"><button class="add" type="button" data-open="${i}">${t("Parts")}</button><button class="ghost" type="button" data-del="${i}" aria-label="Remove">×</button></div></div>`}).join(""):`<div class="empty">${t("No machines saved yet. Pick a machine and tap “Save to My Shed”.")}</div>`;
 }
 $("shedBody").onclick=e=>{const o=e.target.closest("[data-open]"),d=e.target.closest("[data-del]");
-  if(o){const s=shed[o.dataset.open];closeAll();showMachine(MACHINES.find(x=>x.id===s.id),s.year);$("results").scrollIntoView({behavior:"smooth"})}
+  if(o){const s=shed[o.dataset.open];closeAll();showMachine(MACHINES.find(x=>x.id===s.id),s.year,"All");scrollRes()}
   if(d){shed.splice(d.dataset.del,1);saveShed();renderShed()}};
 
 function openDrawer(id){$("scrim").hidden=false;$(id).hidden=false}
@@ -503,10 +576,19 @@ $("shedBtn").onclick=()=>{renderShed();openDrawer("shedDrawer")};
 $("scrim").onclick=closeAll;document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeAll);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
 
-let tt;function toast(t){const el=$("toast");el.textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,2600)}
+let tt;function toast(s){const el=$("toast");el.textContent=s;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,2600)}
+
+/* language switch */
+function setLang(l){
+  lang=l;try{localStorage.setItem("nap-lang",l)}catch(e){}
+  applyStatic();fillSys();fillSizeCat();fillSize();renderSizeCards();renderCats();renderCart();renderShed();
+  if(view)view();
+}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
 
 /* opening state: an example machine already selected */
+applyStatic();fillSys();fillSizeCat();fillSize();renderSizeCards();renderCats();
 fillMakes();$("selMake").value="Massey Ferguson";fillModels();$("selModel").value="375";fillYears();$("selYear").value="1994";
-showMachine(selected(),"1994");saveShed();renderCart();
+showMachine(selected(),"1994","All");saveShed();renderCart();
 </script>
 </body></html>
